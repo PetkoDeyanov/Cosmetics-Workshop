@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 public class ShoppingCart {
 
-    private ArrayList<Product> products = new ArrayList<>();
+    private ArrayList<Product> products;
 
     public ShoppingCart() {
+        products = new ArrayList<>();
     }
 
     public ArrayList<Product> getProducts() {
@@ -19,7 +20,7 @@ public class ShoppingCart {
 
     public void removeProduct(Product product) {
         if (!containsProduct(product))
-            throw new UnsupportedOperationException(("Shopping cart does not contain product with name " + product.getName()) + "!");
+            throw new IllegalArgumentException(("Shopping cart does not contain product with name " + product.getName()) + "!");
 
         products.remove(product);
     }
@@ -27,7 +28,7 @@ public class ShoppingCart {
     public boolean containsProduct(Product product) {
 
         if (products.contains(product)) return true;
-        return true;
+        return false;
     }
 
     public double totalPrice() {

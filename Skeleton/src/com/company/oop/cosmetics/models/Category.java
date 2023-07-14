@@ -18,6 +18,7 @@ public class Category {
     public void setName(String name) {
         if (name.length() < NAME_MIN_LENGTH || name.length() > NAME_MAX_LENGTH)
             throw new IllegalArgumentException("Name should be between 2 and 15 symbols.");
+        this.name = name;
     }
 
     public String getName() {
@@ -30,22 +31,23 @@ public class Category {
 
     public void addProduct(Product product) {
         if (products.contains(product))
-            throw new UnsupportedOperationException("Product is already added.");
+            throw new IllegalArgumentException("Product is already added.");
         products.add(product);
     }
 
     public void removeProduct(Product product) {
-        if(!products.contains(product))
-            throw new UnsupportedOperationException("Product not found in category");
+        if (!products.contains(product))
+            throw new IllegalArgumentException("Product not found in category");
+        products.remove(product);
     }
 
     public String print() {
-        if(products.isEmpty()){
+        if (products.isEmpty()) {
             return ("#Category:" + this.name + "\n #No product in this category");
         }
         StringBuilder output = new StringBuilder();
-        output.append("#Category: "+ this.name);
-        for (Product product : products ) {
+        output.append("#Category: " + this.name);
+        for (Product product : products) {
             output.append(" " + product.print());
         }
         return output.toString();

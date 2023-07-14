@@ -46,7 +46,7 @@ public class CosmeticsRepositoryImpl implements CosmeticsRepository {
         Product out = null;
         boolean found = false;
         for (Product product : products) {
-            if (Objects.equals(product.getName(), productName)) {
+            if (product.getName().equals(productName)) {
                 found = true;
                 out = product;
             }
@@ -61,15 +61,15 @@ public class CosmeticsRepositoryImpl implements CosmeticsRepository {
          * Hint: You have to go through every category and see if one has name equal to categoryName.
          *       If not, "throw new IllegalArgumentException("Category with this name does not exist");"
          */
-        Category out = new Category(categoryName);
+        Category find = new Category(categoryName);
         boolean found = false;
         for (Category category : categories) {
             if (category.getName().equals(categoryName)) {
                 found = true;
-                out = category;
+                find = category;
             }
         }
-        if (found) return out;
+        if (found) return find;
         else throw new IllegalArgumentException("Category with this name does not exist");
 
     }
@@ -94,8 +94,10 @@ public class CosmeticsRepositoryImpl implements CosmeticsRepository {
          */
         boolean out = false;
         for (Category category : categories) {
-            if (category.getName().equals(categoryName))
+            if (category.getName().equals(categoryName)) {
                 out = true;
+                break;
+            }
         }
         return out;
 
