@@ -1,6 +1,6 @@
 package com.company.oop.cosmetics.commands;
 
-import com.company.oop.cosmetics.commands.contracts.Command;
+import com.company.oop.cosmetics.core.contracts.Command;
 import com.company.oop.cosmetics.core.contracts.CosmeticsRepository;
 import com.company.oop.cosmetics.utils.ValidationHelpers;
 

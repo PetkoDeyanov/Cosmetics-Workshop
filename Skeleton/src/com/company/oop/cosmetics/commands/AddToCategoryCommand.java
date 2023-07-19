@@ -1,14 +1,17 @@
 package com.company.oop.cosmetics.commands;
 
-import com.company.oop.cosmetics.commands.contracts.Command;
+import com.company.oop.cosmetics.core.CosmeticsRepositoryImpl;
+import com.company.oop.cosmetics.core.contracts.Command;
 import com.company.oop.cosmetics.core.contracts.CosmeticsRepository;
-import com.company.oop.cosmetics.models.Category;
-import com.company.oop.cosmetics.models.Product;
+import com.company.oop.cosmetics.models.contracts.Category;
+import com.company.oop.cosmetics.models.contracts.Product;
 import com.company.oop.cosmetics.utils.ValidationHelpers;
 
 import java.util.List;
 
 public class AddToCategoryCommand implements Command {
+
+    private static final String CATEGORY_ALREADY_EXISTS = "Category with name %s already exists!";
 
     private static final String PRODUCT_ADDED_TO_CATEGORY = "Product %s added to category %s!";
 
@@ -23,18 +26,22 @@ public class AddToCategoryCommand implements Command {
     @Override
     public String execute(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-        String categoryNameToAdd = parameters.get(0);
+        String categoryToAdd = parameters.get(0);
         String productToAdd = parameters.get(1);
-        return addToCategory(categoryNameToAdd, productToAdd);
+        return addToCategory(categoryToAdd, productToAdd);
     }
 
-    private String addToCategory(String categoryNameToAdd, String productToAdd) {
-        Category category = cosmeticsRepository.findCategoryByName(categoryNameToAdd);
+    private String addToCategory(String categoryToAdd, String productToAdd) {
+        CosmeticsRepositoryImpl repo;
+        if (cosmeticsRepository.categoryExist(categoryToAdd)) {
+            throw new IllegalArgumentException(String.format(CATEGORY_ALREADY_EXISTS, categoryToAdd));
+        }
+        Category category = cosmeticsRepository.findCategoryByName(categoryToAdd);
         Product product = cosmeticsRepository.findProductByName(productToAdd);
 
         category.addProduct(product);
 
-        return String.format(PRODUCT_ADDED_TO_CATEGORY, productToAdd, categoryNameToAdd);
+        return String.format(PRODUCT_ADDED_TO_CATEGORY, productToAdd, categoryToAdd);
     }
 
 }

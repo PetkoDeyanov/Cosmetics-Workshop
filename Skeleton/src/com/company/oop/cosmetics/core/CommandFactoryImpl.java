@@ -1,8 +1,8 @@
 package com.company.oop.cosmetics.core;
 
 import com.company.oop.cosmetics.commands.*;
-import com.company.oop.cosmetics.commands.contracts.Command;
 import com.company.oop.cosmetics.commands.enums.CommandType;
+import com.company.oop.cosmetics.core.contracts.Command;
 import com.company.oop.cosmetics.core.contracts.CommandFactory;
 import com.company.oop.cosmetics.core.contracts.CosmeticsRepository;
 
@@ -21,17 +21,19 @@ public class CommandFactoryImpl implements CommandFactory {
                 return new ShowCategoryCommand(repository);
             case ADDTOCATEGORY:
                 return new AddToCategoryCommand(repository);
-            case CREATEPRODUCT:
-                return new CreateProductCommand(repository);
             case ADDTOSHOPPINGCART:
                 return new AddToShoppingCartCommand(repository);
             case REMOVEFROMSHOPPINGCART:
                 return new RemoveFromShoppingCartCommand(repository);
             case REMOVEFROMCATEGORY:
                 return new RemoveFromCategoryCommand(repository);
+            case CREATESHAMPOO:
+                return new CreateShampooCommand(repository);
+            case CREATETOOTHPASTE:
+                return new CreateToothpasteCommand(repository);
             default:
                 throw new IllegalArgumentException(String.format(INVALID_COMMAND, commandName));
         }
     }
-}
 
+}

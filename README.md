@@ -1,62 +1,92 @@
-# OOP Workshop - Cosmetics Shop 1
+# OOP Workshop - Cosmetics Shop 2
 
 ## Preface
 
-Before you start coding, read this document from top to bottom. It contains some valuable information that will make your work easier.
+Before you start coding, read this document from top to bottom. It has some valuable information that will make your work easier.
 
 ## Description
 
-You are given a software system for managing a cosmetics shop. It allows users to create models (`Product`, `Category`). There is also a `Shopping cart`. Products can be added to or removed from a category and a shopping cart. Your task is to design an object-oriented class hierarchy to model the cosmetics shop, using the best practices for object-oriented design (OOD) and object-oriented programming (OOP). Encapsulate all fields correctly and use validation whenever needed.
+You are given a software system for managing a cosmetics shop. There are several models - two types of products (`Shampoo` and `Toothpaste`), as well as a `Category` and a `Shopping cart`. Your task is to design an object-oriented class hierarchy to model the cosmetics shop, using the best practices for object-oriented design (OOD) and object-oriented programming (OOP). Encapsulate all fields correctly and use validation whenever needed.
 
 ## Architecture
 
-The system already has a working `Engine` which executes a sequence of commands read from the console. It uses the classes and interfaces in your project (see the `CosmeticsEngine` class). You do not have to touch anything in it or the `main()` method, but you could try to understand how they work.
+The system already has a working `Engine` which executes a sequence of commands read from the console. It uses the classes and interfaces in your project (see the `CosmeticsEngine` class). You do not have to touch anything in it or the `main()` method, but you could try to understand how they work. 
 
 ## Models
 
 > Note: All validation intervals are inclusive (closed).
-> Note: Put your classes in the **models** package.
 
-### **Product**
+### **ShampooImpl**
 
-- Each `product` in the system has a `name, brand, price, and gender`.
+- Implements `Shampoo`.
+- Each `shampoo` in the system has a `name, brand, price, gender, milliliters, and usage type`.
 - `name` - the name's length should be between `3` and `10` symbols.
 - Exception message: `Name should be between 3 and 10 symbols.`
 - `brand` - the brand name's length should be between `2` and `10` symbols.
 - Exception message: `Brand should be between 2 and 10 symbols.`
-- `price` cannot be negative.
+- `price` - the price cannot be negative.
 - Exception message: `Price should be non negative.`
-- `Gender type` can be `[Men, Women or Unisex]`.
-- Product's `print()` method should return text in the following format:
+- `Gender type` can be one of `[Men, Women or Unisex]`.
+- `milliliters` cannot be negative.
+- Exception message: `Milliliters should be non negative.`
+- `Usage type` can be `[Every_Day or Medical]`.
+- Should be convertible to **String** in the format:
 
 ```none
- #{name} {brand}
+#{name} {brand}
  #Price: {price}
  #Gender: {genderType}
+ #Milliliters: {milliliters}
+ #Usage: {usageType}
+ ===
 ```
 
-### **Category**
+### **ToothpasteImpl**
 
-- Each `category` has a `name`. `Products` can be **added** to or **removed** from a `category`. 
-- `name` - the category name's length should be between `2` and `15` symbols.
-- Exception message: `Name should be between 2 and 15 symbols.`  
-- Adding the same `product` to one `category` more than once is allowed.
-- When removing a `product` from a `category`, you should throw an `exception` if the product is not found.
-- Exception message: `Product not found in category`.
-
-> Note: We have yet to talk about exceptions, but all you need to know for now is that they indicate if something goes wrong. If you write `throw new IllegalArgumentException()`, you are **throwing an exception** (research how to throw `IllegalArgumentException`).
-
-- Category's `print()` method should return text in the following format:
+- Implements `Toothpaste`.
+- Each `toothpaste` in the system has `name, brand, price, gender, and ingredients`.
+- `name` - the name's length should be between `3` and `10` symbols.
+- Exception message: `Name should be between 3 and 10 symbols.`
+- `brand` - the brand name's length should be between `2` and `10` symbols.
+- Exception message: `Brand should be between 2 and 10 symbols.`
+- `price` - cannot be negative.
+- Exception message: `Price should be non negative.`
+- `Gender type` can be `[Men, Women or Unisex]`.
+- Should be convertible to **String** in the format:
 
 ```none
-#Category: {category name}
- #{name} {brand}
+#{name} {brand}
  #Price: {price}
  #Gender: {genderType}
+ #Ingredients: [VALUE, VALUE]
  ===
- #{name} {brand}
+```
+
+### **CategoryImpl**
+- Has a `name` and a `list of products`.
+- `name` - the name's length should be between `2` and `15` symbols.
+- Exception message: `Name should be between 2 and 15 symbols.`
+- Should be convertible to **String** in the format:
+
+```none
+#Category: Shampoos
+#{name} {brand}
  #Price: {price}
  #Gender: {genderType}
+ #Milliliters: {milliliters}
+ #Usage: {usageType}
+ ===
+#{name} {brand}
+ #Price: {price}
+ #Gender: {genderType}
+ #Milliliters: {milliliters}
+ #Usage: {usageType}
+ ===
+#{name} {brand}
+ #Price: {price}
+ #Gender: {genderType}
+ #Milliliters: {milliliters}
+ #Usage: {usageType}
  ===
 ```
 
@@ -65,21 +95,30 @@ The system already has a working `Engine` which executes a sequence of commands 
  #No product in this category
 ```
 
-### **ShoppingCart**
+### **ShoppingCartImpl**
 
-- `Products` can be **added** to or **removed** from a `shopping cart`.
-- Adding the same product more than once is allowed.
-- When removing a `product` from the `shopping cart` throw an exception, if it is not in it.
-- Exception message: `Shopping cart does not contain product with name %s!`.
-- The `shopping cart` can calculate its products `total price`.
+- Has a `list of products`.
+
+## CosmeticsRepositoryImpl
+
+The `CosmeticsRepositoryImpl` class stores all the application's data. It also handles creating new objects and is used to find existing ones. Your task is implementing all methods that throw `UnsupportedOperationException()`. 
+
+## Interfaces
+
+- All the needed interfaces are already there. **You must use them all** to achieve the best OOP design.
+- When doing the advanced task you need to **create** and use interfaces.
 
 ## Constraints
 
-- Check the example below to understand the printing format better.
-- Format all floating-point values with **two digits** after the decimal point. ([*hint*](https://www.google.com/search?q=java+format+two+decimal+places)).
+- Have a look at the example below to get a better understanding of the printing format.
+- Format all floating-point values with **two digits** after the decimal point.
+- All methods in the above interfaces are **mandatory** (cannot return null or empty).
 
-> *Hint: Use exceptions for validation.*
-> *Hint: Check out the `ValidationHelpers` class. It has some methods that might be useful.*
+## Additional notes
+
+- Put your classes in **cosmetics.models** package.
+- If you decide to create and use new classes and/or interfaces, you can do so.
+- When you implement an unfinished method (one that throws `UnsupportedOperationException()`), delete the `throws new...` line.
 
 ## Unit Tests
 
@@ -87,54 +126,78 @@ The system already has a working `Engine` which executes a sequence of commands 
 - Run them by right-clicking the **tests** package and selecting **Run 'All Tests'**.
 - If you get stuck, check out the tests' names to guide you on what to do.
 
-> *Hint: Run the tests whenever you finish a task to check if it's implemented correctly.*
- 
+> *Hint*: Run the unit tests whenever you finish a task.
 > Note: Be careful not to change anything in the **tests** folder.
 
 ## Step by step guide
 
-1. Start with the `Product` class
+> *Note*: The project won't compile initially. First, you need to build to correct interface hierarchy.
+> *Important*: See the methods in `ParsingHelpers` and `ValidationHelpers` classes and use them whenever possible!
 
-- Apply the Encapsulation principle to all the fields (make sure all fields are private, provide getters and setters for them).
+1. Implement the classes for `Shampoo` and `Toothpaste`.
 
-2. Navigate to the `CosmeticsRepositoryImpl` class in the **cosmetics.core.factories** package
+   - Implement the necessary interfaces.
+   - Look at the **models.contracts** package and think about how to build a correct hierarchy.
+   - Create the necessary fields and initialize them in the constructor.
+   - Validate all the fields according to the constraints above.
+   - Implement all necessary methods. Leave the `print()` method for later.
+   - Did you notice the repeating code in the `ShampooImpl` and `ToothpasteImpl` classes (the common fields/methods)? What could you do to avoid the repetition?
 
-- Implement the `find()` methods - they should go through the respective collections and return the item that has the given name. What should happen if there is no item with that name? Maybe throw an exception?
-- Exception message: `Product %s does not exist!` or `Category %s does not exist!`
-- Implement the `create()` methods - they accept the needed arguments to create a `category` or a `product`.
-- Implement the `exists()` methods - they go through the respective collections and return **true** if there is an item that has the given name.
+2. Implement the unfinished methods in `CosmeticsRepositoryImpl`.
 
-3. Finish the `ShoppingCart` class
+   - This is where the creation of the object should be.
+   - Add the newly created object to the list.
 
-- Encapsulate it (don't allow direct access to it).
-- Initialize the `products` collection.
+3. Implement `CreateShampooCommand` and `CreateToothpasteCommand`.
 
-```java
-public ShoppingCart() {
-        products = new ArrayList<Product>();
-}
-```
+   - In the `execute()` method, validate that the input parameters' count matches the expected count. Next, they should be extracted and parsed, then used to create the `Shampoo`/`Toothpaste`.
 
-- Implement the methods that **add**, **remove** and **search for a** product from the collection.
-- Implement the **total price** method.
+    > *Hint*: Look at `CreateCategoryCommand` if you get stuck.
 
-4. Finish the `Category` class
+4. Implement methods in `CommandFactoryImpl`.
 
-- Initialize the collection.
-- Implement the methods that **add**, **remove** and **get** products from the collection.
+   - This is where we connect the incoming command from the console with the class that implements that command.
 
-5. Implement `print()` methods in both the `Category` and `Product` classes.
+5. Implement the `print()` methods.
 
-- To test the `print()` method, you must run the application, pass the sample input and check the output.
+**6. ADVANCED TASK**
+
+- Implement the new product `Cream` and its creation in the `Engine` class.
+	- Each `cream` in the system has a `name, brand, price, gender, and scent`.
+	- `name` - the name's length should be between `3` and `15` symbols.
+	- Exception message: `Name should be between 3 and 15 symbols.`
+	- `brand` - the brand name's length should be between `3` and `15` symbols.
+	- Exception message: `Brand should be between 3 and 15 symbols.`
+	- `price` - is greater than zero.
+	- Exception message: `Price should be non negative.`
+	- `Gender type` can be `[Men, Women or Unisex]`.
+	- `Scent type` can be `[Rose, Lavender or Vanilla]`.
+	- Should be convertible to **String** in the format:
+
+	```none
+	#{name} {brand}
+	 #Price: {price}
+	 #Gender: {genderType}
+	 #Scent: {scentType}
+	 ===
+	```
+- Implement product creation in the `Factory` and the `Repository`.
+  - Just look at the other products.
+- Test it if it works correctly.
 
 ### Sample Input
 
-```
-CreateProduct MyMan Nivea 10.99 Men
+```none
+CreateShampoo MyMan Nivea 10.99 Men 1000 Every_Day
+CreateToothpaste White Colgate 10.99 Men calcium,fluoride
 CreateCategory Shampoos
+CreateCategory Toothpastes
 AddToCategory Shampoos MyMan
+AddToCategory Toothpastes White
 AddToShoppingCart MyMan
+AddToShoppingCart White
 ShowCategory Shampoos
+ShowCategory Toothpastes
 TotalPrice
 RemoveFromCategory Shampoos MyMan
 ShowCategory Shampoos
@@ -145,20 +208,32 @@ Exit
 
 ### Sample Output
 
-```
-Product with name MyMan was created!
+```none
+Shampoo with name MyMan was created!
+Toothpaste with name White was created!
 Category with name Shampoos was created!
+Category with name Toothpastes was created!
 Product MyMan added to category Shampoos!
+Product White added to category Toothpastes!
 Product MyMan was added to the shopping cart!
+Product White was added to the shopping cart!
 #Category: Shampoos
- #MyMan Nivea
+#MyMan Nivea
  #Price: $10.99
- #Gender: MEN
+ #Gender: Men
+ #Milliliters: 1000
+ #Usage: EveryDay
  ===
-$10.99 total price currently in the shopping cart!
+#Category: Toothpastes
+#White Colgate
+ #Price: $10.99
+ #Gender: Men
+ #Ingredients: [calcium, fluoride]
+ ===
+$21.98 total price currently in the shopping cart.
 Product MyMan removed from category Shampoos!
 #Category: Shampoos
  #No product in this category
 Product MyMan was removed from the shopping cart!
-No product in shopping cart!
+$10.99 total price currently in the shopping cart.
 ```

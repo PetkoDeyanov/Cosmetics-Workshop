@@ -1,9 +1,12 @@
 package com.company.oop.cosmetics.core.contracts;
 
-import com.company.oop.cosmetics.models.Category;
-import com.company.oop.cosmetics.models.GenderType;
-import com.company.oop.cosmetics.models.Product;
-import com.company.oop.cosmetics.models.ShoppingCart;
+import com.company.oop.cosmetics.models.ShampooImpl;
+import com.company.oop.cosmetics.models.ToothpasteImpl;
+import com.company.oop.cosmetics.models.contracts.Category;
+import com.company.oop.cosmetics.models.contracts.Product;
+import com.company.oop.cosmetics.models.contracts.ShoppingCart;
+import com.company.oop.cosmetics.models.enums.GenderType;
+import com.company.oop.cosmetics.models.enums.UsageType;
 
 import java.util.List;
 
@@ -19,12 +22,19 @@ public interface CosmeticsRepository {
 
     Category findCategoryByName(String categoryName);
 
-    void createCategory(String categoryToAdd);
+    Category createCategory(String categoryToAdd);
 
-    void createProduct(String name, String brand, double price, GenderType gender);
+    ShampooImpl createShampoo(String name, String brandName, double price, GenderType genderType,
+                              int millilitres, UsageType usageType);
+
+    ToothpasteImpl createToothpaste(String name, String brandName, double price, GenderType genderType, List<String> ingredients);
 
     boolean categoryExist(String categoryName);
 
     boolean productExist(String productName);
+
+    void removeProductFromCart(Product product);
+
+    void addProductToShoppingCart(Product product);
 
 }

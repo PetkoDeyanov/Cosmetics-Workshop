@@ -1,94 +1,78 @@
 package com.company.oop.cosmetics.models;
 
-import javax.naming.Name;
-import java.util.Objects;
+import com.company.oop.cosmetics.models.enums.GenderType;
+import com.company.oop.cosmetics.models.enums.UsageType;
+import com.company.oop.cosmetics.utils.ValidationHelpers;
 
-public class Product {
+public abstract class Product implements com.company.oop.cosmetics.models.contracts.Product {
 
     public static final int NAME_MIN_LENGTH = 3;
     public static final int NAME_MAX_LENGTH = 10;
-    public static final int BRAND_MIN_LENGTH = 2;
-    public static final int BRAND_MAX_LENGTH = 10;
+    public static final int BRAND_NAME_MIN_LENGTH = 2;
+    public static final int BRAND_NAME_MAX_LENGTH = 10;
+    public static final int MIN_PRICE = 0;
+    public static final String PRICE_SHOULD_BE_NON_NEGATIVE = "Price should be non negative";
+
 
     private String name;
     private String brand;
-
     private double price;
 
-    private GenderType gender;
+    private GenderType genderType;
 
+    public Product() {
 
-    // "Each product in the system has name, brand, price and gender."
-
-    public Product(String name, String brand, double price, GenderType gender) {
-        setPrice(price);
-        setBrand(brand);
-        setGender(gender);
-        setName(name);
     }
 
-    public void setPrice(double price) {
-        if (price < 0) throw new IllegalArgumentException("Price should be non negative.");
+    public Product(String name, String brand, double price, GenderType genderType) {
+        setName(name);
+        setBrand(brand);
+        setPrice(price);
+        setGenderType(genderType);
     }
 
     public void setName(String name) {
-        if (name.length() < NAME_MIN_LENGTH || name.length() > NAME_MAX_LENGTH)
-            throw new IllegalArgumentException("Name should be between 3 and 10 symbols");
+        ValidationHelpers.validateStringLength(name, NAME_MIN_LENGTH, NAME_MAX_LENGTH, "Name");
         this.name = name;
     }
 
-    public void setBrand(String Brand) {
-        if (Brand.length() < BRAND_MIN_LENGTH || Brand.length() > BRAND_MAX_LENGTH)
-            throw new IllegalArgumentException("Brand name should be 2  and 10 symbols.");
-        this.brand = Brand;
+    public void setBrand(String brand) {
+        ValidationHelpers.validateStringLength(brand, BRAND_NAME_MIN_LENGTH, BRAND_NAME_MAX_LENGTH, "Brand");
+        this.brand = brand;
     }
 
-    public void setGender(GenderType gender) {
-        this.gender = gender;
+    private void setPrice(double price) {
+        if (price < MIN_PRICE) throw new IllegalArgumentException(PRICE_SHOULD_BE_NON_NEGATIVE);
+        this.price = price;
     }
 
+    public void setGenderType(GenderType genderType) {
+
+        this.genderType = genderType;
+    }
+
+    @Override
     public String getName() {
         return this.name;
     }
 
-    public double getPrice() {
-        return this.price;
-    }
-
-    public String getBrand() {
+    @Override
+    public String getBrandName() {
         return this.brand;
     }
 
-    public GenderType getGender() {
-
-        return this.gender;
-    }
-
-    public String print() {
-        //throw new UnsupportedOperationException("Not implemented yet.");
-        // Format:
-        //" #[Name] [Brand]
-        // #Price: [Price]
-        // #Gender: [Gender]
-        // ==="
-        StringBuilder result = new StringBuilder();
-        result.append("#" + this.name + " " + this.brand + "\n");
-        result.append("#Price: $" + this.price + "\n");
-        result.append("#Gender: " + this.gender + "\n");
-        result.append("===\n");
-        return result.toString();
-
+    @Override
+    public double getPrice() {
+        return price;
     }
 
     @Override
-    public boolean equals(Object p) {
-        if (this == p) return true;
-        if (p == null || getClass() != p.getClass()) return false;
-        Product product = (Product) p;
-        return Double.compare(this.getPrice(), product.getPrice()) == 0 &&
-                Objects.equals(this.getName(), product.getName()) &&
-                Objects.equals(this.getBrand(), product.getBrand()) &&
-                this.getGender() == product.getGender();
+    public GenderType getGenderType() {
+        return genderType;
     }
 
+    @Override
+    public String print() {
+        return new String();
+    }
 }

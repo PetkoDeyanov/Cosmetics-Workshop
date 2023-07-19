@@ -1,8 +1,8 @@
 package com.company.oop.cosmetics.commands;
 
-import com.company.oop.cosmetics.commands.contracts.Command;
+import com.company.oop.cosmetics.core.contracts.Command;
 import com.company.oop.cosmetics.core.contracts.CosmeticsRepository;
-import com.company.oop.cosmetics.models.Product;
+import com.company.oop.cosmetics.models.contracts.Product;
 import com.company.oop.cosmetics.utils.ValidationHelpers;
 
 import java.util.List;
@@ -28,7 +28,8 @@ public class AddToShoppingCartCommand implements Command {
 
     private String addToShoppingCart(String productName) {
         Product product = cosmeticsRepository.findProductByName(productName);
-        cosmeticsRepository.getShoppingCart().addProduct(product);
+
+        cosmeticsRepository.addProductToShoppingCart(product);
 
         return String.format(PRODUCT_ADDED_TO_SHOPPING_CART, productName);
     }

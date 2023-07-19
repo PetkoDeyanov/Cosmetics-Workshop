@@ -3,8 +3,8 @@ package com.company.oop.cosmetics.tests.utils;
 import java.util.Arrays;
 import java.util.List;
 
-
 public class TestUtilities {
+
     /**
      * Returns a new List with size equal to wantedSize.
      * Useful when you do not care what the contents of the List are,
@@ -14,21 +14,20 @@ public class TestUtilities {
      * @param wantedSize the size of the List to be returned.
      * @return a new List with size equal to wantedSize
      */
-    public static String getString(int wantedSize) {
-        return "x".repeat(wantedSize);
+    public static List<String> getList(int wantedSize) {
+        return Arrays.asList(new String[wantedSize]);
     }
 
     /**
-     * Returns a new List with the passed size param
-     * Useful when you do not care for the contents of the List,
-     * for example when testing if a List of given size
+     * Returns a new String with size equal to wantedSize.
+     * Useful when you do not care what the contents of a String are,
+     * for example when testing if a String of given size
      * would cause an exception being thrown.
      *
-     * @param size the size of List to be returned.
-     * @return a new List with size equal to size
+     * @param wantedSize the size of the String to be returned.
+     * @return a new String with size equal to wantedSize
      */
-    public static List<String> getList(int size) {
-        return Arrays.asList(new String[size]);
+    public static String getString(int wantedSize) {
+        return "x".repeat(wantedSize);
     }
-
 }

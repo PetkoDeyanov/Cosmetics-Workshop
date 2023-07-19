@@ -1,11 +1,13 @@
 package com.company.oop.cosmetics.tests.models;
 
 import com.company.oop.cosmetics.core.contracts.CosmeticsRepository;
-import com.company.oop.cosmetics.models.Category;
-import com.company.oop.cosmetics.models.Product;
+import com.company.oop.cosmetics.models.CategoryImpl;
+import com.company.oop.cosmetics.models.contracts.Category;
+import com.company.oop.cosmetics.models.contracts.Product;
 import com.company.oop.cosmetics.tests.utils.TestUtilities;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CategoryTests {
 
@@ -18,25 +20,25 @@ public class CategoryTests {
     public void add_Should_AddProduct_When_ProductIsValid() {
         // Arrange
         Category category = initializeTestCategory();
-        Product productToAdd = ProductTests.initializeTestProduct();
+        Product productToAdd = ShampooTests.initializeTestShampoo();
 
         // Act, Assert
-        Assertions.assertAll(
-                () -> Assertions.assertDoesNotThrow(() -> category.addProduct(productToAdd)),
-                () -> Assertions.assertEquals(1, category.getProducts().size())
+        assertAll(
+                () -> assertDoesNotThrow(() -> category.addProduct(productToAdd)),
+                () -> assertEquals(1, category.getProducts().size())
         );
     }
 
     @Test
     public void construct_Should_ThrowException_When_CategoryNameIsInvalid() {
         // Arrange, Act, Assert
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Category(INVALID_CATEGORY_NAME));
+        assertThrows(IllegalArgumentException.class, () -> new CategoryImpl(INVALID_CATEGORY_NAME));
     }
 
     @Test
     public void construct_Should_CreateCategory_When_NameIsValid() {
         // Arrange, Act, Assert
-        Assertions.assertDoesNotThrow(() -> new Category(VALID_CATEGORY_NAME));
+        assertDoesNotThrow(() -> new CategoryImpl(VALID_CATEGORY_NAME));
     }
 
     @Test
@@ -45,20 +47,20 @@ public class CategoryTests {
         Category category = initializeTestCategory();
 
         // Assert
-        Assertions.assertNotNull(category.getProducts());
+        assertNotNull(category.getProducts());
     }
 
     @Test
     public void remove_Should_RemoveProduct_When_ProductIsValid() {
         // Arrange, Act
         Category category = initializeTestCategory();
-        Product productToAdd = ProductTests.initializeTestProduct();
-        category.addProduct(productToAdd);
+        Product product = ShampooTests.initializeTestShampoo();
+        category.addProduct(product);
 
         // Act, Assert
-        Assertions.assertAll(
-                () -> Assertions.assertDoesNotThrow(() -> category.removeProduct(ProductTests.initializeTestProduct())),
-                () -> Assertions.assertEquals(0, category.getProducts().size())
+        assertAll(
+                () -> assertDoesNotThrow(() -> category.removeProduct(product)),
+                () -> assertEquals(0, category.getProducts().size())
         );
     }
 
@@ -66,18 +68,18 @@ public class CategoryTests {
     public void remove_Should_ThrowException_When_ProductNotFound() {
         // Arrange, Act
         Category category = initializeTestCategory();
-        Product productToRemove = ProductTests.initializeTestProduct();
+        Product productToRemove = ShampooTests.initializeTestShampoo();
 
         // Act, Assert
-        Assertions.assertThrows(IllegalArgumentException.class, () -> category.removeProduct(productToRemove));
+        assertThrows(IllegalArgumentException.class, () -> category.removeProduct(productToRemove));
     }
 
-    public static Category addInitializedCategoryToRepo(CosmeticsRepository cosmeticsRepository) {
-        cosmeticsRepository.createCategory(VALID_CATEGORY_NAME);
-        return cosmeticsRepository.findCategoryByName(VALID_CATEGORY_NAME);
+    public static Category addInitializedCategoryToRepository(CosmeticsRepository repository) {
+        return repository.createCategory(VALID_CATEGORY_NAME);
     }
 
-    public static Category initializeTestCategory() {
-        return new Category(VALID_CATEGORY_NAME);
+    public static CategoryImpl initializeTestCategory() {
+        return new CategoryImpl(VALID_CATEGORY_NAME);
     }
+
 }

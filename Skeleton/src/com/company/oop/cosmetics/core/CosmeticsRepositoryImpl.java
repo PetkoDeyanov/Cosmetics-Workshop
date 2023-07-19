@@ -1,25 +1,32 @@
 package com.company.oop.cosmetics.core;
 
 import com.company.oop.cosmetics.core.contracts.CosmeticsRepository;
-import com.company.oop.cosmetics.models.Category;
-import com.company.oop.cosmetics.models.GenderType;
-import com.company.oop.cosmetics.models.Product;
-import com.company.oop.cosmetics.models.ShoppingCart;
+import com.company.oop.cosmetics.models.CategoryImpl;
+import com.company.oop.cosmetics.models.ShampooImpl;
+import com.company.oop.cosmetics.models.ShoppingCartImpl;
+import com.company.oop.cosmetics.models.ToothpasteImpl;
+import com.company.oop.cosmetics.models.contracts.Category;
+import com.company.oop.cosmetics.models.contracts.Product;
+import com.company.oop.cosmetics.models.contracts.ShoppingCart;
+import com.company.oop.cosmetics.models.enums.GenderType;
+import com.company.oop.cosmetics.models.enums.UsageType;
 
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.List;
 
 public class CosmeticsRepositoryImpl implements CosmeticsRepository {
 
-    private final ArrayList<Product> products;
-    private final ArrayList<Category> categories;
+    private static final String PRODUCT_DOES_NOT_EXIST = "Product %s does not exist!";
+    private static final String CATEGORY_DOES_NOT_EXIST = "Category %s does not exist!";
+
+    private final List<Product> products;
+    private final List<Category> categories;
     private final ShoppingCart shoppingCart;
 
     public CosmeticsRepositoryImpl() {
-        products = new ArrayList<>();
-        categories = new ArrayList<>();
-
-        shoppingCart = new ShoppingCart();
+        this.products = new ArrayList<>();
+        this.categories = new ArrayList<>();
+        this.shoppingCart = new ShoppingCartImpl();
     }
 
     @Override
@@ -28,93 +35,98 @@ public class CosmeticsRepositoryImpl implements CosmeticsRepository {
     }
 
     @Override
-    public ArrayList<Category> getCategories() {
+    public List<Category> getCategories() {
         return new ArrayList<>(categories);
     }
 
     @Override
-    public ArrayList<Product> getProducts() {
+    public List<Product> getProducts() {
         return new ArrayList<>(products);
     }
 
     @Override
     public Product findProductByName(String productName) {
-        /**
-         * Hint: You have to go through every product and see if one has name equal to productName.
-         *       If not, "throw new IllegalArgumentException("Product with this name does not exist");"
-         */
-        Product out = null;
-        boolean found = false;
-        for (Product product : products) {
-            if (product.getName().equals(productName)) {
-                found = true;
-                out = product;
-            }
+        Product product = null;
+
+        for (Product pr: products ) {
+            if (pr.getName().equals(productName))
+                product = pr;
         }
-        if (found) return out;
-        else throw new IllegalArgumentException("Product with this name does not exist");
+        if (product == null) throw new IllegalArgumentException(String.format(PRODUCT_DOES_NOT_EXIST,productName));
+        return product;
     }
 
     @Override
     public Category findCategoryByName(String categoryName) {
-        /**
-         * Hint: You have to go through every category and see if one has name equal to categoryName.
-         *       If not, "throw new IllegalArgumentException("Category with this name does not exist");"
-         */
-        Category find = new Category(categoryName);
-        boolean found = false;
-        for (Category category : categories) {
-            if (category.getName().equals(categoryName)) {
-                found = true;
-                find = category;
+        for (Category category : getCategories()) {
+            if (category.getName().equalsIgnoreCase(categoryName)) {
+                return category;
             }
         }
-        if (found) return find;
-        else throw new IllegalArgumentException("Category with this name does not exist");
 
+        throw new IllegalArgumentException(String.format(CATEGORY_DOES_NOT_EXIST, categoryName));
     }
 
     @Override
-    public void createCategory(String categoryName) {
-        Category category = new Category(categoryName);
-        categories.add(category);
+    public Category createCategory(String categoryName) {
+        Category category = new CategoryImpl(categoryName);
+        this.categories.add(category);
+        return category;
     }
 
     @Override
-    public void createProduct(String name, String brand, double price, GenderType gender) {
-        Product product = new Product(name, brand, price, gender);
-        products.add(product);
+    public ShampooImpl createShampoo(String name, String brandName, double price, GenderType genderType,
+                                     int millilitres, UsageType usageType) {
+
+        ShampooImpl shampoo = new ShampooImpl(name, brandName, price, genderType, millilitres, usageType);
+        products.add(shampoo);
+        return shampoo;
+    }
+
+    @Override
+    public ToothpasteImpl createToothpaste(String name, String brandName, double price, GenderType genderType, List<String> ingredients) {
+        ToothpasteImpl thootpaste = new ToothpasteImpl(name, brandName, price, genderType, ingredients);
+        products.add(thootpaste);
+        return  thootpaste;
+
     }
 
     @Override
     public boolean categoryExist(String categoryName) {
-        /**
-         * Hint: You have to go through every category and see if one has name equal to categoryName.
-         *       If there is one, return true. If not, return false.
-         */
-        boolean out = false;
-        for (Category category : categories) {
-            if (category.getName().equals(categoryName)) {
-                out = true;
+        boolean exists = false;
+
+        for (Category category : getCategories()) {
+            if (category.getName().equalsIgnoreCase(categoryName)) {
+                exists = true;
                 break;
             }
         }
-        return out;
 
+        return exists;
     }
 
     @Override
     public boolean productExist(String productName) {
-        /**
-         * Hint: You have to go through every product and see if one has name equal to productName.
-         *       If there is one, return true. If not, return false.
-         */
-        boolean out = false;
-        for (Product product : products) {
-            if (product.getName().equals(productName))
-                out = true;
-        }
-        return out;
+        boolean exists = false;
 
+        for (Product product : getProducts()) {
+            if (product.getName().equalsIgnoreCase(productName)) {
+                exists = true;
+                break;
+            }
+        }
+
+        return exists;
     }
+
+    @Override
+    public void addProductToShoppingCart(Product product) {
+        shoppingCart.addProduct(product);
+    }
+
+    @Override
+    public void removeProductFromCart(Product product) {
+        shoppingCart.removeProduct(product);
+    }
+
 }

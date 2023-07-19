@@ -1,67 +1,61 @@
 package com.company.oop.cosmetics.tests.commands;
 
-import com.company.oop.cosmetics.commands.AddToShoppingCartCommand;
-import com.company.oop.cosmetics.commands.contracts.Command;
+import com.company.oop.cosmetics.commands.CreateCategoryCommand;
 import com.company.oop.cosmetics.core.CosmeticsRepositoryImpl;
+import com.company.oop.cosmetics.core.contracts.Command;
 import com.company.oop.cosmetics.core.contracts.CosmeticsRepository;
-import com.company.oop.cosmetics.models.Category;
-import org.junit.jupiter.api.Assertions;
+import com.company.oop.cosmetics.models.contracts.Category;
+import com.company.oop.cosmetics.tests.models.CategoryTests;
+import com.company.oop.cosmetics.tests.utils.TestUtilities;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.company.oop.cosmetics.tests.models.CategoryTests.INVALID_CATEGORY_NAME;
-import static com.company.oop.cosmetics.tests.models.CategoryTests.addInitializedCategoryToRepo;
-import static com.company.oop.cosmetics.tests.utils.TestUtilities.getList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CreateCategoryCommandTests {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
 
-    private Command createCategoryCommand;
-    private CosmeticsRepository cosmeticsRepository;
-
+    Command createCategoryCommand;
+    CosmeticsRepository cosmeticsRepository;
 
     @BeforeEach
-    public void before() {
+    public void beforeEach() {
         cosmeticsRepository = new CosmeticsRepositoryImpl();
-        createCategoryCommand = new AddToShoppingCartCommand(cosmeticsRepository);
+        createCategoryCommand = new CreateCategoryCommand(cosmeticsRepository);
     }
 
     @Test
     public void should_ThrowException_When_ArgumentCountDifferentThanExpected() {
         // Arrange
-        List<String> params = getList(EXPECTED_NUMBER_OF_ARGUMENTS - 1);
+        List<String> params = TestUtilities.getList(EXPECTED_NUMBER_OF_ARGUMENTS - 1);
 
         // Act, Assert
-        Assertions.assertThrows(IllegalArgumentException.class, () -> createCategoryCommand.execute(params));
+        assertThrows(IllegalArgumentException.class, () -> createCategoryCommand.execute(params));
     }
 
     @Test
-    public void should_ThrowException_When_CategoryNameIsInvalid() {
-        // Arrange
-        List<String> params = List.of(INVALID_CATEGORY_NAME);
+    public void should_ThrowException_When_NameExist() {
+        // Arrange, Act
+        Category category = CategoryTests.addInitializedCategoryToRepository(cosmeticsRepository);
+        List<String> parameters = List.of(category.getName());
 
-        // Act, Assert
-        Assertions.assertThrows(IllegalArgumentException.class, () -> createCategoryCommand.execute(params));
+        // Assert
+        assertThrows(IllegalArgumentException.class, () -> createCategoryCommand.execute(parameters));
     }
 
     @Test
-    public void should_ThrowException_When_CategoryWithSameNameExists() {
+    public void should_AddToList_When_ArgumentsAreValid() {
         // Arrange
-        Category category = addInitializedCategoryToRepo(cosmeticsRepository);
+        List<String> parameters = List.of(CategoryTests.VALID_CATEGORY_NAME);
 
-        // Act, Assert
-        Assertions.assertThrows(IllegalArgumentException.class, () -> createCategoryCommand.execute(List.of(category.getName())));
-    }
+        // Act
+        createCategoryCommand.execute(parameters);
 
-    @Test
-    public void should_CreateCategory_When_ArgumentsAreValid() {
-        // Arrange
-        addInitializedCategoryToRepo(cosmeticsRepository);
-
-        // Act, Assert
-        Assertions.assertEquals(1, cosmeticsRepository.getCategories().size());
+        // Assert
+        assertEquals(1, cosmeticsRepository.getCategories().size());
     }
 }

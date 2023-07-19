@@ -1,6 +1,6 @@
 package com.company.oop.cosmetics.core;
 
-import com.company.oop.cosmetics.commands.contracts.Command;
+import com.company.oop.cosmetics.core.contracts.Command;
 import com.company.oop.cosmetics.core.contracts.CommandFactory;
 import com.company.oop.cosmetics.core.contracts.CosmeticsRepository;
 import com.company.oop.cosmetics.core.contracts.Engine;
@@ -80,4 +80,5 @@ public final class CosmeticsEngineImpl implements Engine {
         }
         return parameters;
     }
+
 }

@@ -1,12 +1,12 @@
 package com.company.oop.cosmetics.tests.models;
 
-import com.company.oop.cosmetics.models.Product;
-import com.company.oop.cosmetics.models.ShoppingCart;
-import org.junit.jupiter.api.Assertions;
+import com.company.oop.cosmetics.models.ShoppingCartImpl;
+import com.company.oop.cosmetics.models.contracts.Product;
+import com.company.oop.cosmetics.models.contracts.ShoppingCart;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ShoppingCartTests {
 
@@ -14,13 +14,13 @@ public class ShoppingCartTests {
 
     @BeforeEach
     public void before() {
-        cart = new ShoppingCart();
+        cart = new ShoppingCartImpl();
     }
 
     @Test
     public void add_Should_AddProduct_When_ProductIsValid() {
         // Arrange, Act
-        Product productToAdd = ProductTests.initializeTestProduct();
+        Product productToAdd = ShampooTests.initializeTestShampoo();
 
         // Act
         cart.addProduct(productToAdd);
@@ -32,13 +32,13 @@ public class ShoppingCartTests {
     @Test
     public void construct_Should_InitializeNewListOfProducts() {
         // Arrange, Act, Assert
-        Assertions.assertNotNull(cart.getProducts());
+        assertNotNull(cart.getProducts());
     }
 
     @Test
     public void getProducts_Should_ReturnCopyOfTheCollection() {
         // Arrange
-        Product productToAdd = ProductTests.initializeTestProduct();
+        Product productToAdd = ShampooTests.initializeTestShampoo();
 
         // Act
         cart.getProducts().add(productToAdd);
@@ -50,30 +50,30 @@ public class ShoppingCartTests {
     @Test
     public void contains_Should_ReturnTrue_When_ProductIsFound() {
         // Arrange, Act
-        Product productToAdd = ProductTests.initializeTestProduct();
-        cart.addProduct(productToAdd);
+        Product product = ShampooTests.initializeTestShampoo();
+        cart.addProduct(product);
 
         // Act
-        boolean isFound = cart.containsProduct(ProductTests.initializeTestProduct());
+        boolean isFound = cart.containsProduct(product);
 
         //Assert
-        Assertions.assertTrue(isFound);
+        assertTrue(isFound);
     }
 
     @Test
     public void contains_Should_ReturnFalse_When_ProductNotFound() {
         // Arrange, Act
-        boolean isFound = cart.containsProduct(ProductTests.initializeTestProduct());
+        boolean isFound = cart.containsProduct(ShampooTests.initializeTestShampoo());
 
         //Assert
-        Assertions.assertFalse(isFound);
+        assertFalse(isFound);
     }
 
     @Test
     public void remove_Should_RemoveProduct_When_ProductInCart() {
         // Arrange
-        Product product1 = ProductTests.initializeTestProduct();
-        Product product2 = ProductTests.initializeTestProduct();
+        Product product1 = ShampooTests.initializeTestShampoo();
+        Product product2 = ShampooTests.initializeTestShampoo();
         cart.addProduct(product1);
         cart.addProduct(product2);
 
@@ -87,6 +87,25 @@ public class ShoppingCartTests {
     @Test
     public void remove_Should_ThrowException_When_ProductNotInCart() {
         // Arrange, Act, Assert
-        Assertions.assertThrows(IllegalArgumentException.class, () -> cart.removeProduct(ProductTests.initializeTestProduct()));
+        assertThrows(IllegalArgumentException.class, () -> cart.removeProduct(ShampooTests.initializeTestShampoo()));
     }
+
+    @Test
+    public void totalPrice_Should_ReturnNull_When_NoProductsInCart() {
+        // Arrange, Act, Assert
+        assertEquals(cart.totalPrice(), 0);
+    }
+
+    @Test
+    public void totalPrice_Should_ReturnSumOfAllProductsInCart() {
+        // Arrange
+        Product product1 = ShampooTests.initializeTestShampoo();
+        Product product2 = ShampooTests.initializeTestShampoo();
+        cart.addProduct(product1);
+        cart.addProduct(product2);
+
+        // Act, Assert
+        assertEquals(cart.totalPrice(), product1.getPrice() + product2.getPrice());
+    }
+
 }
