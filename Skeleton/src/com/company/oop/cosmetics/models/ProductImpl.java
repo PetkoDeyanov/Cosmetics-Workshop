@@ -75,7 +75,7 @@ public abstract class ProductImpl implements Product {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("#{%s} {%s}\n",this.name, this.brand));
         sb.append(String.format(" #Price: {%.2f}\n",this.price));
-        sb.append(String.format(" #Gender: {%h}\n",this.genderType));
+        sb.append(String.format(" #Gender: {%s}\n",this.genderType));
         return sb.toString();
 
     }
