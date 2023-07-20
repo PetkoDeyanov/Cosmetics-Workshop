@@ -4,6 +4,6 @@ import com.company.oop.cosmetics.models.enums.ScentType;
 
 public interface Cream extends  Product{
 
-    ScentType getScentType();
+    ScentType getScent();
 
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class AddToCategoryCommand implements Command {
 
-    private static final String CATEGORY_ALREADY_EXISTS = "Category with name %s already exists!";
+    private static final String CATEGORY_DOES_NOT_EXIST = "Category with name %s does not exists!";
 
     private static final String PRODUCT_ADDED_TO_CATEGORY = "Product %s added to category %s!";
 
@@ -32,9 +32,9 @@ public class AddToCategoryCommand implements Command {
     }
 
     private String addToCategory(String categoryToAdd, String productToAdd) {
-        CosmeticsRepositoryImpl repo;
-        if (cosmeticsRepository.categoryExist(categoryToAdd)) {
-            throw new IllegalArgumentException(String.format(CATEGORY_ALREADY_EXISTS, categoryToAdd));
+
+        if (!cosmeticsRepository.categoryExist(categoryToAdd)) {
+            throw new IllegalArgumentException(String.format(CATEGORY_DOES_NOT_EXIST, categoryToAdd));
         }
         Category category = cosmeticsRepository.findCategoryByName(categoryToAdd);
         Product product = cosmeticsRepository.findProductByName(productToAdd);

@@ -1,14 +1,12 @@
 package com.company.oop.cosmetics.core;
 
 import com.company.oop.cosmetics.core.contracts.CosmeticsRepository;
-import com.company.oop.cosmetics.models.CategoryImpl;
-import com.company.oop.cosmetics.models.ShampooImpl;
-import com.company.oop.cosmetics.models.ShoppingCartImpl;
-import com.company.oop.cosmetics.models.ToothpasteImpl;
+import com.company.oop.cosmetics.models.*;
 import com.company.oop.cosmetics.models.contracts.Category;
 import com.company.oop.cosmetics.models.contracts.Product;
 import com.company.oop.cosmetics.models.contracts.ShoppingCart;
 import com.company.oop.cosmetics.models.enums.GenderType;
+import com.company.oop.cosmetics.models.enums.ScentType;
 import com.company.oop.cosmetics.models.enums.UsageType;
 
 import java.util.ArrayList;
@@ -85,10 +83,17 @@ public class CosmeticsRepositoryImpl implements CosmeticsRepository {
 
     @Override
     public ToothpasteImpl createToothpaste(String name, String brandName, double price, GenderType genderType, List<String> ingredients) {
-        ToothpasteImpl thootpaste = new ToothpasteImpl(name, brandName, price, genderType, ingredients);
-        products.add(thootpaste);
-        return  thootpaste;
+        ToothpasteImpl toothpaste = new ToothpasteImpl(name, brandName, price, genderType, ingredients);
+        products.add(toothpaste);
+        return  toothpaste;
 
+    }
+
+    @Override
+    public CreamImpl createCream(String name, String brandName, double price, GenderType genderType, ScentType scentType) {
+        CreamImpl cream = new CreamImpl(name, brandName, price, genderType, scentType);
+        products.add(cream);
+        return cream;
     }
 
     @Override

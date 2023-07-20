@@ -2,9 +2,6 @@ package com.company.oop.cosmetics.commands;
 
 import com.company.oop.cosmetics.core.contracts.Command;
 import com.company.oop.cosmetics.core.contracts.CosmeticsRepository;
-import com.company.oop.cosmetics.models.Product;
-import com.company.oop.cosmetics.models.ShampooImpl;
-import com.company.oop.cosmetics.models.contracts.Shampoo;
 import com.company.oop.cosmetics.models.enums.GenderType;
 import com.company.oop.cosmetics.models.enums.UsageType;
 import com.company.oop.cosmetics.utils.ParsingHelpers;
@@ -38,9 +35,9 @@ public class CreateShampooCommand implements Command {
 
         String name = parameters.get(0);
         String brand = parameters.get(1);
-        double price = Double.parseDouble(parameters.get(2));
+        double price = ParsingHelpers.tryParseDouble(parameters.get(2), ParsingHelpers.INVALID_PRICE);
         GenderType genderType = ParsingHelpers.tryParseGender(parameters.get(3));
-        int mils = Integer.parseInt(parameters.get(4));
+        int mils = ParsingHelpers.tryParseInt(parameters.get(4), ParsingHelpers.INVALID_MILLILITRES);
         UsageType usageType = ParsingHelpers.tryParseUsageType(parameters.get(5));
 
        cosmeticsRepository.createShampoo( name, brand,price , genderType, mils, usageType);

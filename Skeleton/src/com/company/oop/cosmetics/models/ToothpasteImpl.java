@@ -3,11 +3,10 @@ package com.company.oop.cosmetics.models;
 import com.company.oop.cosmetics.models.contracts.Toothpaste;
 import com.company.oop.cosmetics.models.enums.GenderType;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ToothpasteImpl extends Product implements Toothpaste {
+public class ToothpasteImpl extends ProductImpl implements Toothpaste {
 
 
     public List<String> ingredients;
@@ -22,6 +21,14 @@ public class ToothpasteImpl extends Product implements Toothpaste {
         return Collections.unmodifiableList(ingredients);
     }
 
+    @Override
+    public String print() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(super.print());
+        sb.append(String.format(" #Ingredients: {%s}", String.join(", ", getIngredients())));
+        sb.append(" ###").append(System.lineSeparator());
+        return sb.toString();
+    }
 
     // This method should be uncommented when you are done with the class.
     @Override

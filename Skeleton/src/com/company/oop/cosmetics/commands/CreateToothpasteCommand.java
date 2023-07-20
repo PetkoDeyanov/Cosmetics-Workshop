@@ -14,8 +14,8 @@ public class CreateToothpasteCommand implements Command {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 5;
 
-    private static final String TOOTHPASTE_CREATED = "Shampoo with name %s was created!";
-    private static final String TOOTHPASTE_ALREADY_EXISTS = "Shampoo with name %s already exists!";
+    private static final String TOOTHPASTE_CREATED = "Toothpaste with name %s was created!";
+    private static final String TOOTHPASTE_ALREADY_EXISTS = "Toothpaste with name %s already exists!";
     private final CosmeticsRepository cosmeticsRepository;
 
     public CreateToothpasteCommand(CosmeticsRepository cosmeticsRepository) {
@@ -34,10 +34,10 @@ public class CreateToothpasteCommand implements Command {
         }
         String name = parameters.get(0);
         String brand = parameters.get(1);
-        double price = Double.parseDouble(parameters.get(2));
+        double price = ParsingHelpers.tryParseDouble(parameters.get(2), ParsingHelpers.INVALID_PRICE);
         GenderType genderType = ParsingHelpers.tryParseGender(parameters.get(3));
         List<String> ingredients = new ArrayList<>();
-        for (int i = 3; i < parameters.size(); i++) {
+        for (int i = 4; i < parameters.size(); i++) {
             ingredients.add(parameters.get(i));
         }
 
@@ -46,29 +46,5 @@ public class CreateToothpasteCommand implements Command {
 
         return String.format(TOOTHPASTE_CREATED, name);
     }
-
-    /*
-public String execute(List<String> parameters) {
-        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-        return createShampoo(parameters);
-    }
-
-    private String createShampoo(List<String> parameters) {
-        if (cosmeticsRepository.productExist(parameters.get(0))) {
-            throw new IllegalArgumentException(String.format(SHAMPOO_ALREADY_EXISTS, parameters.get(0)));
-        }
-
-        String name = parameters.get(0);
-        String brand = parameters.get(1);
-        double price = Double.parseDouble(parameters.get(2));
-        GenderType genderType = ParsingHelpers.tryParseGender(parameters.get(3));
-        int mils = Integer.parseInt(parameters.get(4));
-        UsageType usageType = ParsingHelpers.tryParseUsageType(parameters.get(5));
-
-       cosmeticsRepository.createShampoo( name, brand,price , genderType, mils, usageType);
-
-        return String.format(SHAMPOO_CREATED, name);
-    }
-     */
 
 }
