@@ -8,6 +8,7 @@ import com.company.oop.cosmetics.models.contracts.ShoppingCart;
 import com.company.oop.cosmetics.models.enums.GenderType;
 import com.company.oop.cosmetics.models.enums.ScentType;
 import com.company.oop.cosmetics.models.enums.UsageType;
+import com.company.oop.cosmetics.utils.ParsingHelpers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,11 +47,11 @@ public class CosmeticsRepositoryImpl implements CosmeticsRepository {
     public Product findProductByName(String productName) {
         Product product = null;
 
-        for (Product pr: products ) {
+        for (Product pr : products) {
             if (pr.getName().equals(productName))
                 product = pr;
         }
-        if (product == null) throw new IllegalArgumentException(String.format(PRODUCT_DOES_NOT_EXIST,productName));
+        if (product == null) throw new IllegalArgumentException(String.format(PRODUCT_DOES_NOT_EXIST, productName));
         return product;
     }
 
@@ -75,7 +76,9 @@ public class CosmeticsRepositoryImpl implements CosmeticsRepository {
     @Override
     public ShampooImpl createShampoo(String name, String brandName, double price, GenderType genderType,
                                      int millilitres, UsageType usageType) {
-
+        if (productExist(name)) {
+            throw new IllegalArgumentException(String.format(ParsingHelpers.PRODUCT_NAME_ALREADY_EXISTS, "Shampoo", name));
+        }
         ShampooImpl shampoo = new ShampooImpl(name, brandName, price, genderType, millilitres, usageType);
         products.add(shampoo);
         return shampoo;
@@ -83,14 +86,22 @@ public class CosmeticsRepositoryImpl implements CosmeticsRepository {
 
     @Override
     public ToothpasteImpl createToothpaste(String name, String brandName, double price, GenderType genderType, List<String> ingredients) {
+        if (productExist(name)) {
+            throw new IllegalArgumentException(String.format(ParsingHelpers.PRODUCT_NAME_ALREADY_EXISTS, "Toothpaste", name));
+        }
+
         ToothpasteImpl toothpaste = new ToothpasteImpl(name, brandName, price, genderType, ingredients);
         products.add(toothpaste);
-        return  toothpaste;
+        return toothpaste;
 
     }
 
     @Override
     public CreamImpl createCream(String name, String brandName, double price, GenderType genderType, ScentType scentType) {
+        if (productExist(name)) {
+            throw new IllegalArgumentException(String.format(ParsingHelpers.PRODUCT_NAME_ALREADY_EXISTS, "Cream", name));
+        }
+
         CreamImpl cream = new CreamImpl(name, brandName, price, genderType, scentType);
         products.add(cream);
         return cream;

@@ -12,8 +12,6 @@ import java.util.List;
 public class CreateCreamCommand implements Command {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 5;
-    private static final String CREAM_CREATED = "Cream with name %s was created!";
-    private static final String CREAM_ALREADY_EXISTS = "Cream with name %s already exists!";
     private final CosmeticsRepository cosmeticsRepository;
 
     public CreateCreamCommand(CosmeticsRepository cosmeticsRepository) {
@@ -28,10 +26,6 @@ public class CreateCreamCommand implements Command {
     }
 
     private String createCream(List<String> parameters) {
-        if (cosmeticsRepository.productExist(parameters.get(0))) {
-            throw new IllegalArgumentException(String.format(CREAM_ALREADY_EXISTS, parameters.get(0)));
-        }
-
         String name = parameters.get(0);
         String brand = parameters.get(1);
         double price = ParsingHelpers.tryParseDouble(parameters.get(2), ParsingHelpers.INVALID_PRICE);
@@ -40,6 +34,6 @@ public class CreateCreamCommand implements Command {
 
         cosmeticsRepository.createCream( name, brand,price , genderType, scent);
 
-        return String.format(CREAM_CREATED, name);
+        return String.format(ParsingHelpers.PRODUCT_CREATED, "Cream", name);
     }
 }

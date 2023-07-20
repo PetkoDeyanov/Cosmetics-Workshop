@@ -14,8 +14,7 @@ public class CreateToothpasteCommand implements Command {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 5;
 
-    private static final String TOOTHPASTE_CREATED = "Toothpaste with name %s was created!";
-    private static final String TOOTHPASTE_ALREADY_EXISTS = "Toothpaste with name %s already exists!";
+
     private final CosmeticsRepository cosmeticsRepository;
 
     public CreateToothpasteCommand(CosmeticsRepository cosmeticsRepository) {
@@ -29,9 +28,6 @@ public class CreateToothpasteCommand implements Command {
     }
 
     private String createToothpaste(List<String> parameters) {
-        if (cosmeticsRepository.productExist(parameters.get(0))) {
-            throw new IllegalArgumentException(String.format(TOOTHPASTE_ALREADY_EXISTS, parameters.get(0)));
-        }
         String name = parameters.get(0);
         String brand = parameters.get(1);
         double price = ParsingHelpers.tryParseDouble(parameters.get(2), ParsingHelpers.INVALID_PRICE);
@@ -44,7 +40,7 @@ public class CreateToothpasteCommand implements Command {
 
         cosmeticsRepository.createToothpaste( name, brand,price , genderType, ingredients);
 
-        return String.format(TOOTHPASTE_CREATED, name);
+        return String.format(ParsingHelpers.PRODUCT_CREATED, "Toothpaste", name);
     }
 
 }

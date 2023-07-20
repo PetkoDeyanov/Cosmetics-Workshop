@@ -13,8 +13,6 @@ public class CreateShampooCommand implements Command {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 6;
 
-    private static final String SHAMPOO_CREATED = "Shampoo with name %s was created!";
-    private static final String SHAMPOO_ALREADY_EXISTS = "Shampoo with name %s already exists!";
     private final CosmeticsRepository cosmeticsRepository;
 
     public CreateShampooCommand(CosmeticsRepository cosmeticsRepository) {
@@ -29,9 +27,6 @@ public class CreateShampooCommand implements Command {
     }
 
     private String createShampoo(List<String> parameters) {
-        if (cosmeticsRepository.productExist(parameters.get(0))) {
-            throw new IllegalArgumentException(String.format(SHAMPOO_ALREADY_EXISTS, parameters.get(0)));
-        }
 
         String name = parameters.get(0);
         String brand = parameters.get(1);
@@ -42,7 +37,7 @@ public class CreateShampooCommand implements Command {
 
        cosmeticsRepository.createShampoo( name, brand,price , genderType, mils, usageType);
 
-        return String.format(SHAMPOO_CREATED, name);
+        return String.format(ParsingHelpers.PRODUCT_CREATED, "Shampoo", name);
     }
 
 }
