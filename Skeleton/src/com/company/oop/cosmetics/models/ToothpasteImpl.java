@@ -9,7 +9,7 @@ import java.util.List;
 public class ToothpasteImpl extends ProductImpl implements Toothpaste {
 
 
-    public List<String> ingredients;
+    private final List<String> ingredients;
     public ToothpasteImpl(String name, String brandName, double price, GenderType genderType, List<String> ingredients) {
         super(name, brandName, price, genderType);
         this.ingredients = ingredients;
@@ -26,11 +26,9 @@ public class ToothpasteImpl extends ProductImpl implements Toothpaste {
         StringBuilder sb = new StringBuilder();
         sb.append(super.print());
         sb.append(String.format(" #Ingredients: {%s}", String.join(", ", getIngredients())));
-        sb.append(" ###").append(System.lineSeparator());
+        sb.append("\n ###").append(System.lineSeparator());
         return sb.toString();
     }
-
-    // This method should be uncommented when you are done with the class.
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

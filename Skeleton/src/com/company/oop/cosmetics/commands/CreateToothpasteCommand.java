@@ -3,11 +3,11 @@ package com.company.oop.cosmetics.commands;
 import com.company.oop.cosmetics.core.contracts.Command;
 import com.company.oop.cosmetics.core.contracts.CosmeticsRepository;
 import com.company.oop.cosmetics.models.enums.GenderType;
-import com.company.oop.cosmetics.models.enums.UsageType;
+
 import com.company.oop.cosmetics.utils.ParsingHelpers;
 import com.company.oop.cosmetics.utils.ValidationHelpers;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,18 +27,13 @@ public class CreateToothpasteCommand implements Command {
     }
 
     private String createToothpaste(List<String> parameters) {
+
         String name = parameters.get(0);
         String brand = parameters.get(1);
         double price = ParsingHelpers.tryParseDouble(parameters.get(2), ParsingHelpers.INVALID_PRICE);
         GenderType genderType = ParsingHelpers.tryParseGender(parameters.get(3));
 
         List<String> ingredients = Arrays.stream(parameters.get(4).split(",")).toList();
-
-//parameters.subList(4, parameters.size()).stream().toList();
-       /* for (int i = 4; i < parameters.size(); i++) {
-            ingredients.add(parameters.get(i));
-        }
-*/
 
         cosmeticsRepository.createToothpaste( name, brand,price , genderType, ingredients);
 

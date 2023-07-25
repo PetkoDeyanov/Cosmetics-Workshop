@@ -80,6 +80,7 @@ public class CosmeticsRepositoryImpl implements CosmeticsRepository {
             throw new IllegalArgumentException(String.format(ParsingHelpers.PRODUCT_NAME_ALREADY_EXISTS, "Shampoo", name));
         }
         ShampooImpl shampoo = new ShampooImpl(name, brandName, price, genderType, millilitres, usageType);
+
         products.add(shampoo);
         return shampoo;
     }

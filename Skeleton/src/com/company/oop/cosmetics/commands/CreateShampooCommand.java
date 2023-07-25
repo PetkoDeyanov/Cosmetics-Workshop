@@ -29,6 +29,9 @@ public class CreateShampooCommand implements Command {
     private String createShampoo(List<String> parameters) {
 
         String name = parameters.get(0);
+       /* if (cosmeticsRepository.productExist(categoryName)) {
+            throw new IllegalArgumentException(String.format(CATEGORY_ALREADY_EXISTS, categoryName));
+        }*/
         String brand = parameters.get(1);
         double price = ParsingHelpers.tryParseDouble(parameters.get(2), ParsingHelpers.INVALID_PRICE);
         GenderType genderType = ParsingHelpers.tryParseGender(parameters.get(3));

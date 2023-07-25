@@ -22,7 +22,7 @@ public class CreamImpl extends ProductImpl implements Cream {
         StringBuilder sb = new StringBuilder();
         sb.append(super.print());
         sb.append(String.format(" #Scent: {%s}\n", getScent().toString()));
-        sb.append(" ###").append(System.lineSeparator());
+        sb.append("\n ###").append(System.lineSeparator());
         return sb.toString();
     }
 

@@ -30,12 +30,12 @@ public abstract class ProductImpl implements Product {
         setGenderType(genderType);
     }
 
-    public void setName(String name) {
+    private void setName(String name) {
         ValidationHelpers.validateStringLength(name, NAME_MIN_LENGTH, NAME_MAX_LENGTH, "Name");
         this.name = name;
     }
 
-    public void setBrand(String brand) {
+    private void setBrand(String brand) {
         ValidationHelpers.validateStringLength(brand, BRAND_NAME_MIN_LENGTH, BRAND_NAME_MAX_LENGTH, "Brand");
         this.brand = brand;
     }
@@ -45,7 +45,7 @@ public abstract class ProductImpl implements Product {
         this.price = price;
     }
 
-    public void setGenderType(GenderType genderType) {
+    private void setGenderType(GenderType genderType) {
 
         this.genderType = genderType;
     }

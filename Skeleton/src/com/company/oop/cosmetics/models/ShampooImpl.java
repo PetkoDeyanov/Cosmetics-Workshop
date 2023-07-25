@@ -9,7 +9,7 @@ public class ShampooImpl extends ProductImpl implements Shampoo {
 
     public static final int MIN_MILS = 0;
     private int milliliters;
-    
+
     private UsageType usageType;
 
     public ShampooImpl(String name, String brand, double price, GenderType genderType, int milliliters, UsageType usageType) {
@@ -18,8 +18,8 @@ public class ShampooImpl extends ProductImpl implements Shampoo {
         setUsageType(usageType);
     }
 
-    private void setMilliliters(int mils){
-        if(mils <= MIN_MILS) throw new IllegalArgumentException(ParsingHelpers.INVALID_MILLILITRES);
+    private void setMilliliters(int mils) {
+        if (mils <= MIN_MILS) throw new IllegalArgumentException(ParsingHelpers.INVALID_MILLILITRES);
         this.milliliters = mils;
     }
 
@@ -37,13 +37,11 @@ public class ShampooImpl extends ProductImpl implements Shampoo {
         return usageType;
     }
 
-    // This method should be uncommented when you are done with the class.
-
     @Override
     public String print() {
         StringBuilder sb = new StringBuilder();
         sb.append(super.print());
-        sb.append(String.format(" #Milliliters: {%o}\n", getMillilitres()));
+        sb.append(String.format(" #Milliliters: {%d}\n", getMillilitres()));
         sb.append(String.format(" #Usage: {%s}\n", getUsageType().toString()));
         sb.append(" ###").append(System.lineSeparator());
         return sb.toString();
